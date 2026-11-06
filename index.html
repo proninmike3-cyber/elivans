@@ -160,7 +160,7 @@
       </div>
     </div>
     <div class="hero-image-wrap">
-      <img class="hero-image" src="https://avatars.mds.yandex.net/get-altay/14090927/2a000001928a6b4ea5c4aa117d877310adf5/XXL_height" alt="Светлый интерьер салона Еливанс с бархатными синими креслами, золотыми деталями и зеркалами" fetchpriority="high" referrerpolicy="no-referrer">
+      <img class="hero-image" onerror="this.style.display='none'" src="https://avatars.mds.yandex.net/get-altay/14090927/2a000001928a6b4ea5c4aa117d877310adf5/XXL_height" alt="Светлый интерьер салона Еливанс с бархатными синими креслами, золотыми деталями и зеркалами" fetchpriority="high" referrerpolicy="no-referrer">
       <div class="hero-image-vignette"></div>
       <div class="hero-image-label"><span class="hero-image-line"></span><span>Атмосфера, которую хочется почувствовать</span></div>
       <a class="hero-round-link" href="#about" aria-label="Узнать о салоне"><svg class="icon"><use href="#i-arrow-diag"/></svg></a>
@@ -921,8 +921,10 @@ function normalize(s){return s.toLocaleLowerCase('ru-RU').replaceAll('ё','е').
 function renderPrices(){
   const query = normalize(search.value);
   const matched = prices.filter(item=>(activeCategory==='all'||item.category===activeCategory)&&(!query||normalize(item.name+' '+(item.note||'')).includes(query)));
-  const limit = activeCategory==='all'&&!query&&!expanded?12:matched.length;
-  const visible = matched.slice(0,limit);
+  // Show a useful mix of services from every category on the first visit.
+  const visible = activeCategory==='all'&&!query&&!expanded
+    ? ['hair','face','nails','brows','body'].flatMap(category=>matched.filter(item=>item.category===category).slice(0,3))
+    : matched;
   list.replaceChildren();
   for(const item of visible){
     const row = document.createElement('div'); row.className='price-row';
@@ -935,7 +937,7 @@ function renderPrices(){
     row.append(name,cost);list.append(row);
   }
   empty.hidden=matched.length!==0;
-  moreButton.hidden=activeCategory!=='all'||!!query||matched.length<=12;
+  moreButton.hidden=activeCategory!=='all'||!!query||matched.length<=15;
   if(!moreButton.hidden){moreButton.innerHTML=expanded?'Свернуть список <span aria-hidden="true">↑</span>':'Показать все '+matched.length+' услуг <span aria-hidden="true">↓</span>';moreButton.setAttribute('aria-expanded',String(expanded));}
 }
 function setTab(category){
