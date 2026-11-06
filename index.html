@@ -106,6 +106,21 @@
 .contact-social .contact-social-arrow{width:12px;height:12px;color:var(--ink)}
 @media(max-width:700px){.contact-socials{gap:7px}.contact-social{flex:1 1 auto;justify-content:center;padding:0 8px;font-size:10px}.price-name{font-size:12px}}
 
+
+/* Fixed-on-scroll site navigation, centered relative to the viewport. */
+.header{position:sticky;top:0;z-index:200;background:#fdfcf9}
+.prices-section{scroll-margin-top:92px}
+@media (min-width:991px){
+ .header-inner{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px}
+ .header-inner .brand{justify-self:start}
+ .header-inner .desktop-nav{margin:0;justify-self:center;justify-content:center}
+ .header-inner .header-book{margin-left:0;justify-self:end}
+}
+@media (max-width:990px){
+ .header-inner{display:flex;justify-content:space-between}
+ .prices-section{scroll-margin-top:84px}
+}
+
 </style>
 
   <script type="application/ld+json">
@@ -176,7 +191,7 @@
         <a class="service-card service-large" href="#prices" data-category-target="hair"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=85" loading="lazy" alt="Парикмахерское пространство"/><span class="service-shade"></span><span class="service-top">01 / Искусство волос</span><span class="service-bottom"><span><b>Волосы</b><small>Стрижки · Окрашивание · Уход</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
         <a class="service-card" href="#prices" data-category-target="nails"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=85" loading="lazy" alt="Ухоженные руки с аккуратным маникюром"/><span class="service-shade"></span><span class="service-top">02 / Безупречные детали</span><span class="service-bottom"><span><b>Маникюр и педикюр</b><small>Красота до кончиков пальцев</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
         <a class="service-card" href="#prices" data-category-target="face"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=85" loading="lazy" alt="Косметологический уход за лицом"/><span class="service-shade"></span><span class="service-top">03 / Естественное сияние</span><span class="service-bottom"><span><b>Косметология</b><small>Уходы · Чистки · Массаж лица</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
-        <a class="service-card" href="#prices" data-category-target="brows"><img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=800&q=85" loading="lazy" alt="Естественная красота лица и бровей"/><span class="service-shade"></span><span class="service-top">04 / Выразительный взгляд</span><span class="service-bottom"><span><b>Брови и ресницы</b><small>Форма · Цвет · Ламинирование</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
+        <a class="service-card" href="#prices" data-category-target="brows"><img src="https://images.pexels.com/photos/6135621/pexels-photo-6135621.jpeg?auto=compress&amp;dpr=1&amp;h=750&amp;w=1260" loading="lazy" alt="Мастер оформляет брови клиентке в салоне красоты"/><span class="service-shade"></span><span class="service-top">04 / Выразительный взгляд</span><span class="service-bottom"><span><b>Брови и ресницы</b><small>Форма · Цвет · Ламинирование</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
         <a class="service-card" href="#prices" data-category-target="body"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=85" loading="lazy" alt="Уходовые процедуры для красоты кожи"/><span class="service-shade"></span><span class="service-top">05 / Время для себя</span><span class="service-bottom"><span><b>Депиляция</b><small>Восковая эпиляция · Тридинг</small></span><span class="service-arrow"><svg class="icon"><use href="#i-arrow-diag"/></svg></span></span></a>
       </div>
     </div>
@@ -915,7 +930,19 @@ moreButton.className = 'price-more';
 moreButton.setAttribute('aria-expanded','false');
 moreButton.innerHTML = 'Показать все услуги <span aria-hidden="true">↓</span>';
 list.after(moreButton);
-moreButton.addEventListener('click',()=>{expanded=!expanded;renderPrices();});
+moreButton.addEventListener('click',()=>{
+  const wasExpanded=expanded;
+  expanded=!expanded;
+  renderPrices();
+  if(wasExpanded && !expanded){
+    requestAnimationFrame(()=>{
+      document.getElementById('prices').scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block:'start'
+      });
+    });
+  }
+});
 
 function normalize(s){return s.toLocaleLowerCase('ru-RU').replaceAll('ё','е').trim();}
 function renderPrices(){
