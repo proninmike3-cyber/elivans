@@ -64,7 +64,7 @@
   .hero-actions .btn{min-height:42px}
 }
 @media (max-width:700px){
-  .hero{height:calc(100vh - 130px);height:calc(100svh - 130px);min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .hero{height:calc(100vh - 130px);height:calc(100svh - 130px - env(safe-area-inset-bottom));min-height:0;display:flex;flex-direction:column;overflow:hidden}
   .hero-content{flex:0 0 auto;padding:clamp(14px,2.8svh,28px) 22px clamp(10px,1.8svh,18px)}
   .hero .eyebrow{margin-bottom:clamp(9px,1.8svh,16px)}
   .hero h1{font-size:clamp(49px,14.5vw,75px);line-height:.9}
