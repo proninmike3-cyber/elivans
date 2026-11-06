@@ -121,6 +121,28 @@
  .prices-section{scroll-margin-top:84px}
 }
 
+
+/* Verified YCLIENTS team profiles — photographic editorial cards */
+.team-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.team-card{min-height:350px;padding:29px 22px 24px;gap:0;overflow:hidden;background:linear-gradient(150deg,#faf9f6,#f1eee7);border-color:#e3dfd5}
+.team-card:hover{transform:translateY(-3px);border-color:#cbb88f}
+.team-no{top:17px;left:20px}
+.team-portrait{width:142px;height:142px;overflow:hidden;flex:none;margin:0 0 20px;background:linear-gradient(135deg,#ddd4c6,#f6f1e7)}
+.team-portrait img{height:100%;width:100%;object-fit:cover;object-position:center 35%;display:block}
+.team-portrait-fallback{height:100%;width:100%;display:grid;place-items:center}
+.team-portrait-fallback[hidden]{display:none}
+.team-portrait-fallback .icon{height:43px;width:43px;color:#b6a17e}
+.team-card h3{font-size:clamp(25px,2.2vw,32px);line-height:1.12;margin:0 0 7px;text-wrap:balance}
+.team-card .team-role{font-size:11px;font-weight:700;color:#67716c;line-height:1.6}
+.team-reviews{display:flex;gap:7px;align-items:center;font-size:11px;font-weight:700;color:#8d7653;margin:12px 0 20px}
+.team-reviews .icon{width:15px;height:15px;fill:none;stroke:#ad925e}
+.team-card-link{margin-top:auto;display:inline-flex;gap:7px;align-items:center;padding:8px 0 4px;border-bottom:1px solid #cbb88f;font-size:11px;font-weight:800;color:var(--deep);transition:color .2s}
+.team-card-link:hover{color:var(--gold)}
+.team-card-link .icon{height:13px;width:13px}
+@media(max-width:990px){.team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.team-card{min-height:320px;padding:23px 17px}.team-portrait{height:122px;width:122px;margin-bottom:16px}}
+@media(max-width:600px){.team-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.team-card{min-height:282px;padding:22px 10px 15px}.team-portrait{width:98px;height:98px;margin-bottom:12px}.team-card h3{font-size:clamp(20px,5vw,25px);margin-bottom:6px}.team-card .team-role{font-size:10px;line-height:1.45}.team-reviews{font-size:10px;margin:9px 0 14px}.team-card-link{font-size:10px}.team-no{top:10px;left:10px;font-size:11px}}
+@media(max-width:350px){.team-grid{grid-template-columns:1fr}.team-card{min-height:280px}.team-portrait{width:122px;height:122px}.team-card h3{font-size:27px}}
+
 </style>
 
   <script type="application/ld+json">
@@ -214,7 +236,92 @@
     <div class="container about-layout"><div class="about-images"><img class="about-main-image" src="https://avatars.mds.yandex.net/get-altay/14093276/2a00000192bd161608028b03eac7e259b44d/XXL_height" loading="lazy" referrerpolicy="no-referrer" alt="Интерьер салона Еливанс с глубокими синими креслами"/><div class="about-image-badge"><svg class="icon"><use href="#i-spark"/></svg><span>Здесь начинается<br>ваше время для себя</span></div></div><div class="about-copy"><p class="eyebrow"><span class="eyebrow-line"></span> Знакомьтесь, Еливанс</p><h2>Место, где<br>вам <em>хорошо.</em></h2><p class="about-lead">Не просто салон. Маленькая пауза в большом городе, где можно выдохнуть и почувствовать себя особенной.</p><p>Светлый интерьер, глубокие синие кресла, тонкие золотые акценты и люди, которым по-настоящему важно, как вы себя чувствуете. Здесь профессиональный уход становится приятным ритуалом.</p><div class="about-features"><div><svg class="icon"><use href="#i-check"/></svg><span>Внимательные мастера и индивидуальный подход</span></div><div><svg class="icon"><use href="#i-check"/></svg><span>Разные направления красоты под одной крышей</span></div><div><svg class="icon"><use href="#i-check"/></svg><span>Уютное пространство в ЖК «Парад планет»</span></div></div><a class="text-link" href="#contacts">Как нас найти <svg class="icon"><use href="#i-arrow-diag"/></svg></a></div></div>
   </section>
 
-  <section id="team" class="section team-section"><div class="container"><div class="section-head"><div><p class="eyebrow"><span class="eyebrow-line"></span> Наши специалисты</p><h2>Красота — дело <em>рук</em><br>и большого сердца</h2></div><div class="head-right"><p>Те, кому доверяют самое важное: свой образ, настроение и уверенность в себе. Выберите своего мастера и удобное время онлайн.</p></div></div><div class="team-grid"><div class="team-card"><span class="team-no">01</span><span class="team-portrait"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Елена Пошибайлова</h3><p>Ногтевой сервис</p><div class="team-line"></div></div><div class="team-card"><span class="team-no">02</span><span class="team-portrait"><svg class="icon"><use href="#i-leaf"/></svg></span><h3>Анастасия Титкова</h3><p>Брови и эстетика взгляда</p><div class="team-line"></div></div><div class="team-card"><span class="team-no">03</span><span class="team-portrait"><svg class="icon"><use href="#i-spark"/></svg></span><h3>Ирина Грибина</h3><p>Парикмахерское искусство</p><div class="team-line"></div></div><div class="team-card"><span class="team-no">04</span><span class="team-portrait"><svg class="icon"><use href="#i-leaf"/></svg></span><h3>Светлана Усачева</h3><p>Косметология</p><div class="team-line"></div></div></div><div class="team-bottom"><span>Выберите специалиста и удобное время прямо в онлайн-записи</span><a href="https://n768387.yclients.com/company/717626/personal/select-master?o=" target="_blank" rel="noopener noreferrer" class="text-link">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a></div></div></section>
+  <section id="team" class="section team-section">
+  <div class="container">
+    <div class="section-head">
+      <div><p class="eyebrow"><span class="eyebrow-line"></span> Команда Еливанс · 9 специалистов</p><h2>Мастера, которым <em>доверяют</em></h2></div>
+      <div class="head-right"><p>У каждого мастера — свой профиль и направление работы. Познакомьтесь с командой и выберите специалиста, который подходит именно вам.</p></div>
+    </div>
+    <div class="team-grid">
+      <article class="team-card">
+  <span class="team-no">01</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/1/13/1320f9cd5c882e4_20260813184326.png" alt="Олеся — мастер маникюра" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Олеся</h3>
+  <p class="team-role">Мастер маникюра</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>4 отзыва</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">02</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/a/a0/a05cf9fedcd7798_20240620181110.png" alt="Светлана Усачева — косметолог" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Светлана Усачева</h3>
+  <p class="team-role">Косметолог</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>16 отзывов</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">03</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/1/19/19348854d7eda3e_20241023002856.png" alt="Елена Пошибайлова — мастер маникюра и педикюра" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Елена Пошибайлова</h3>
+  <p class="team-role">Мастер маникюра и педикюра</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>42 отзыва</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">04</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/7/70/7063ef88ba106c7_20220812114737.png" alt="Анастасия Титкова — топ-мастер по бровям" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Анастасия Титкова</h3>
+  <p class="team-role">Топ-мастер по бровям</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>30 отзывов</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">05</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/9/9d/9dfc91fa96ca869_20221009141221.png" alt="Меланя Лорецян — парикмахер-стилист" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Меланя Лорецян</h3>
+  <p class="team-role">Парикмахер-стилист</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>42 отзыва</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">06</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/7/77/77c5c1544c1542b_20220812114806.png" alt="Ирина Грибина — парикмахер" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Ирина Грибина</h3>
+  <p class="team-role">Парикмахер</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>15 отзывов</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">07</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/1/12/125b847e77e70a8_20241204004312.png" alt="Инга Папоян — мастер маникюра и педикюра" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Инга Папоян</h3>
+  <p class="team-role">Мастер маникюра и педикюра</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>75 отзывов</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">08</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/0/05/05ef1e54eb7be1c_20220812114907.png" alt="Жанна Пракина — косметолог" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Жанна Пракина</h3>
+  <p class="team-role">Косметолог</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>21 отзыв</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+<article class="team-card">
+  <span class="team-no">09</span>
+  <div class="team-portrait"><img src="https://assets.yclients.com/masters/sm/c/c2/c239e8c1fea3ab6_20260906234934.png" alt="Анна Барановская — мастер маникюра" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="team-portrait-fallback" hidden><svg class="icon"><use href="#i-spark"/></svg></span></div>
+  <h3>Анна Барановская</h3>
+  <p class="team-role">Мастер маникюра</p>
+  <span class="team-reviews"><svg class="icon"><use href="#i-star"/></svg>1 отзыв</span>
+  <a class="team-card-link" target="_blank" rel="noopener noreferrer" href="https://n768387.yclients.com/company/717626/personal/select-master?o=">Выбрать мастера <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+</article>
+    </div>
+    <div class="team-bottom">
+      <span>Актуальный состав специалистов и доступное время — в онлайн-записи.</span>
+      <a href="https://n768387.yclients.com/company/717626/personal/select-master?o=" target="_blank" rel="noopener noreferrer" class="text-link">Смотреть всех мастеров <svg class="icon"><use href="#i-arrow-diag"/></svg></a>
+    </div>
+  </div>
+</section>
 
   <section class="gift-section"><div class="container gift-content"><div class="gift-icon"><svg class="icon"><use href="#i-gift"/></svg></div><div class="gift-text"><p class="eyebrow">Особенный знак внимания</p><h2>Подарите <em>время для себя</em></h2><p>Подарочный сертификат в Еливанс — возможность выбрать заботу по душе. Уточните доступные номиналы у администратора.</p></div><a href="tel:+79261705579" class="btn btn-light">Узнать о сертификатах <svg class="icon"><use href="#i-arrow"/></svg></a></div></section>
 
