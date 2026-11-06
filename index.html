@@ -42,116 +42,7 @@
 @media(min-width:991px){.hero{min-height:560px;height:clamp(560px,calc(100svh - 112px),850px)}}
 
 </style>
-  <script defer>
-'use strict';
 
-const prices = [
-  {category:'nails',name:'Маникюр классический',price:1400,note:'Без покрытия · по данным Яндекс Услуг'},
-  {category:'nails',name:'Маникюр аппаратный',price:1000,note:'Без покрытия'},
-  {category:'nails',name:'Маникюр мужской',price:1200},
-  {category:'nails',name:'Японский маникюр',price:1900},
-  {category:'nails',name:'Маникюр со снятием и покрытием гель-лак',price:2200,note:'Средняя длина · Luxio / Sova De Luxe'},
-  {category:'nails',name:'Наращивание ногтей',price:3900},
-  {category:'nails',name:'Коррекция наращённых ногтей гелем',price:2900},
-  {category:'nails',name:'Укрепление ногтей гелем',price:2600},
-  {category:'nails',name:'Педикюр аппаратный',price:1800},
-  {category:'nails',name:'Педикюр со снятием и покрытием гель-лак',price:3100},
-  {category:'nails',name:'Педикюр аппаратный с покрытием френч',price:3400},
-  {category:'nails',name:'Педикюр мужской',price:2300},
-  {category:'nails',name:'Парафинотерапия рук',price:700},
-  {category:'hair',name:'Женская стрижка',price:'2 500–4 000 ₽',note:'Стоимость зависит от длины волос'},
-  {category:'hair',name:'Мужская стрижка',price:null},
-  {category:'hair',name:'Укладка волос',price:null},
-  {category:'hair',name:'Окрашивание и тонирование',price:null,note:'Расчёт с учётом длины и расхода материалов'},
-  {category:'hair',name:'Сложное окрашивание',price:null,note:'Стоимость уточняется на консультации'},
-  {category:'hair',name:'Биозавивка волос',price:null,note:'Уточняйте общую стоимость процедуры'},
-  {category:'face',name:'Уход по типу кожи',price:4000},
-  {category:'face',name:'Чистка лица',price:null},
-  {category:'face',name:'Пилинг лица',price:null},
-  {category:'face',name:'Массаж лица',price:null},
-  {category:'face',name:'Аппаратная косметология',price:null},
-  {category:'brows',name:'Коррекция и оформление бровей',price:null},
-  {category:'brows',name:'Окрашивание бровей',price:null},
-  {category:'brows',name:'Ламинирование ресниц',price:null},
-  {category:'brows',name:'Пудровое напыление бровей',price:null},
-  {category:'brows',name:'Перманентный макияж',price:null},
-  {category:'body',name:'Массаж тела',price:null},
-  {category:'body',name:'Шугаринг',price:null},
-  {category:'body',name:'Восковая депиляция',price:null},
-  {category:'body',name:'Электроэпиляция',price:null}
-];
-
-const list = document.getElementById('price-list');
-const empty = document.getElementById('price-empty');
-const search = document.getElementById('price-search');
-const tabs = [...document.querySelectorAll('[data-tab]')];
-let activeCategory = 'all';
-let expanded = false;
-const numberFormatter = new Intl.NumberFormat('ru-RU');
-
-// Entire price list is created from local data. No form sends personal data.
-const moreButton = document.createElement('button');
-moreButton.type = 'button';
-moreButton.className = 'price-more';
-moreButton.setAttribute('aria-expanded','false');
-moreButton.innerHTML = 'Показать все услуги <span aria-hidden="true">↓</span>';
-list.after(moreButton);
-moreButton.addEventListener('click',()=>{expanded=!expanded;renderPrices();});
-
-function normalize(s){return s.toLocaleLowerCase('ru-RU').replaceAll('ё','е').trim();}
-function renderPrices(){
-  const query = normalize(search.value);
-  const matched = prices.filter(item=>(activeCategory==='all'||item.category===activeCategory)&&(!query||normalize(item.name+' '+(item.note||'')).includes(query)));
-  const limit = activeCategory==='all'&&!query&&!expanded?12:matched.length;
-  const visible = matched.slice(0,limit);
-  list.replaceChildren();
-  for(const item of visible){
-    const row = document.createElement('div'); row.className='price-row';
-    const name = document.createElement('span'); name.className='price-name';name.textContent=item.name;
-    if(item.note){const detail=document.createElement('small');detail.textContent=item.note;name.append(detail);}
-    const cost = document.createElement('span');cost.className='price-value';
-    if(item.price===null){cost.classList.add('is-ask');cost.textContent='Уточнить';}
-    else if(typeof item.price==='number'){cost.textContent=numberFormatter.format(item.price)+' ₽';}
-    else{cost.textContent=item.price;}
-    row.append(name,cost);list.append(row);
-  }
-  empty.hidden=matched.length!==0;
-  moreButton.hidden=activeCategory!=='all'||!!query||matched.length<=12;
-  if(!moreButton.hidden){moreButton.innerHTML=expanded?'Свернуть список <span aria-hidden="true">↑</span>':'Показать все '+matched.length+' услуг <span aria-hidden="true">↓</span>';moreButton.setAttribute('aria-expanded',String(expanded));}
-}
-function setTab(category){
-  activeCategory=category;expanded=false;
-  for(const button of tabs){const selected=button.dataset.tab===category;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;}
-  renderPrices();
-}
-tabs.forEach((button,index)=>{
-  button.addEventListener('click',()=>setTab(button.dataset.tab));
-  button.addEventListener('keydown',event=>{
-    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-    event.preventDefault();
-    const newIndex=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
-    tabs[newIndex].focus();setTab(tabs[newIndex].dataset.tab);
-  });
-});
-search.addEventListener('input',()=>{expanded=false;renderPrices();});
-document.querySelectorAll('[data-category-target]').forEach(link=>link.addEventListener('click',()=>{search.value='';setTab(link.dataset.categoryTarget);}));
-renderPrices();
-
-const toggle = document.querySelector('.menu-toggle');
-const mobileNav = document.getElementById('mobile-nav');
-function closeMenu(){toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Открыть меню');mobileNav.classList.remove('is-open');mobileNav.inert=true;}
-function openMenu(){toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Закрыть меню');mobileNav.classList.add('is-open');mobileNav.inert=false;}
-toggle.addEventListener('click',()=>toggle.getAttribute('aria-expanded')==='true'?closeMenu():openMenu());
-mobileNav.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){closeMenu();toggle.focus();}});
-document.addEventListener('click',event=>{if(!event.target.closest('.header')&&toggle.getAttribute('aria-expanded')==='true')closeMenu();});
-window.matchMedia('(min-width: 991px)').addEventListener('change',ev=>{if(ev.matches)closeMenu();});
-
-const questions=[...document.querySelectorAll('.faq-list details')];
-questions.forEach(entry=>entry.addEventListener('toggle',()=>{if(entry.open)questions.forEach(other=>{if(other!==entry)other.open=false;});}));
-document.getElementById('copyright-year').textContent=new Date().getFullYear();
-
-</script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BeautySalon","name":"Еливанс","telephone":"+7-926-170-55-79","address":{"@type":"PostalAddress","streetAddress":"улица Академика Легостаева, 8","addressLocality":"Королёв","addressRegion":"Московская область","addressCountry":"RU"},"openingHours":"Mo-Su 09:00-21:00","url":"https://taplink.cc/elivans"}
   </script>
@@ -254,5 +145,765 @@ document.getElementById('copyright-year').textContent=new Date().getFullYear();
 </main>
 <footer class="footer"><div class="container footer-inner"><a href="#top" class="footer-brand"><span>ЕЛИВАНС</span><small>Красота, в которой вы настоящая.</small></a><div class="footer-nav"><a href="#services">Услуги</a><a href="#prices">Цены</a><a href="#about">О салоне</a><a href="#contacts">Контакты</a></div><div class="footer-actions"><a href="https://vk.com/club214754374" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте" class="social-circle"><svg class="icon"><use href="#i-vk"/></svg></a><a href="tel:+79261705579" aria-label="Позвонить" class="social-circle"><svg class="icon"><use href="#i-phone"/></svg></a></div></div><div class="container footer-bottom"><span>© <span id="copyright-year">2026</span> Еливанс. Салон красоты, Королёв.</span><span>С любовью к деталям.</span></div></footer>
 <div class="mobile-fixed-cta"><a href="https://taplink.cc/elivans" target="_blank" rel="noopener noreferrer">Записаться онлайн <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+<script>
+'use strict';
+
+const prices = [
+  {
+    "category": "hair",
+    "name": "Блондирование корней",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Кислотная смывка",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Мелирование длинных волос",
+    "price": 8000
+  },
+  {
+    "category": "hair",
+    "name": "Мелирование средних волос",
+    "price": 6000
+  },
+  {
+    "category": "hair",
+    "name": "Мелирование коротких волос",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Укладка диффузором длинных волос",
+    "price": 1200
+  },
+  {
+    "category": "hair",
+    "name": "Укладка феном (длинные)",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Укладка феном (средние)",
+    "price": 2000
+  },
+  {
+    "category": "hair",
+    "name": "Коллагеновое восстановление на длинные волосы",
+    "price": 7500
+  },
+  {
+    "category": "hair",
+    "name": "Восстановительные маски на длинные волосы",
+    "price": 3000
+  },
+  {
+    "category": "hair",
+    "name": "Восстановительные маски на средние волосы",
+    "price": 2200
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон длинных волос",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон средних волос",
+    "price": 4000
+  },
+  {
+    "category": "hair",
+    "name": "Тонирование волос (длинные)",
+    "price": 6000
+  },
+  {
+    "category": "hair",
+    "name": "Тонирование волос (средние)",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Био завивка (длинные волосы)",
+    "price": 15000
+  },
+  {
+    "category": "hair",
+    "name": "Био завивка (средние волосы)",
+    "price": 10000
+  },
+  {
+    "category": "hair",
+    "name": "Био завивка (короткие волосы)",
+    "price": 7000
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка женская (длинные волосы)",
+    "price": 2800
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка женская (средние волосы)",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка женская (короткие волосы)",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Сушка феном без укладочных средств",
+    "price": 1000
+  },
+  {
+    "category": "hair",
+    "name": "Тонирование волос (короткие)",
+    "price": 3000
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка челки",
+    "price": 700
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон коротких волос",
+    "price": 4000
+  },
+  {
+    "category": "hair",
+    "name": "Укладка диффузором средних волос",
+    "price": 800
+  },
+  {
+    "category": "hair",
+    "name": "Восстановительные маски на короткие волосы",
+    "price": 1500
+  },
+  {
+    "category": "hair",
+    "name": "Био завивка вертикальная",
+    "price": 12000
+  },
+  {
+    "category": "hair",
+    "name": "Коллагеновое восстановление на короткие волосы",
+    "price": 4500
+  },
+  {
+    "category": "hair",
+    "name": "Мытьё головы с сушкой феном",
+    "price": 1000
+  },
+  {
+    "category": "hair",
+    "name": "Экспресс спа (ампула)",
+    "price": 1500
+  },
+  {
+    "category": "hair",
+    "name": "Молекулярный пилинг головы",
+    "price": 3000
+  },
+  {
+    "category": "hair",
+    "name": "Пигментирование волос",
+    "price": 1000
+  },
+  {
+    "category": "hair",
+    "name": "Нейтрализация волос",
+    "price": 1000
+  },
+  {
+    "category": "hair",
+    "name": "Репигментация волос",
+    "price": 1500
+  },
+  {
+    "category": "hair",
+    "name": "Уход Абсолютное счастье для волос от Lebel короткие волосы",
+    "price": 4000,
+    "note": "Профессиональный уход для гладкости, мягкости и блеска волос"
+  },
+  {
+    "category": "hair",
+    "name": "Уход Абсолютное счастье для волос от Lebel средние волосы",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Уход Абсолютное счастье для волос от Lebel длинные волосы",
+    "price": 6000,
+    "note": "Профессиональный уход, в том числе для пористых волос"
+  },
+  {
+    "category": "hair",
+    "name": "Коллагеновое восстановление средних волос",
+    "price": 6000
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка коротких волос",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка средних волос",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Стрижка длинных волос",
+    "price": 4000
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон (короткие волосы)",
+    "price": 4000
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон (средние волосы)",
+    "price": 5000
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание в один тон (длинные волосы)",
+    "price": 6000
+  },
+  {
+    "category": "hair",
+    "name": "Укладка феном (короткие)",
+    "price": 1500
+  },
+  {
+    "category": "hair",
+    "name": "Вечерняя укладка волос (средние)",
+    "price": 2500
+  },
+  {
+    "category": "hair",
+    "name": "Окрашивание корни до 2,5 см",
+    "price": 4500,
+    "note": "Профессиональное окрашивание корней"
+  },
+  {
+    "category": "hair",
+    "name": "Сложное окрашивание (омбре, балаяж, шатуш, выдувание, мелирование, Art-Touch) средних волос",
+    "price": 12000
+  },
+  {
+    "category": "hair",
+    "name": "Сложное окрашивание (омбре, балаяж, шатуш, Art-Touch) коротких волос",
+    "price": 9500
+  },
+  {
+    "category": "hair",
+    "name": "Сложное окрашивание (омбре, балаяж, шатуш, Art-Touch) длинных волос",
+    "price": 15000
+  },
+  {
+    "category": "hair",
+    "name": "Вечерняя укладка волос (длинные)",
+    "price": 3500
+  },
+  {
+    "category": "hair",
+    "name": "Мелирование T-зона (1/2 головы)",
+    "price": 4000
+  },
+  {
+    "category": "hair",
+    "name": "Уходовая процедура для волос, маска",
+    "price": 1500
+  },
+  {
+    "category": "hair",
+    "name": "Мелирование Т-зона",
+    "price": 4000
+  },
+  {
+    "category": "body",
+    "name": "Мужская эпиляция воском брови",
+    "price": 450
+  },
+  {
+    "category": "brows",
+    "name": "Окрашивание ресниц",
+    "price": 700
+  },
+  {
+    "category": "brows",
+    "name": "Окрашивание бровей краской",
+    "price": 1100
+  },
+  {
+    "category": "brows",
+    "name": "Ламинирование бровей",
+    "price": 2700
+  },
+  {
+    "category": "brows",
+    "name": "Ламинирование ресниц",
+    "price": 2700
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском верхняя губа",
+    "price": 350
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском лицо",
+    "price": 500
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском подмышки",
+    "price": 700
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском руки до локтя",
+    "price": 800
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском руки полностью",
+    "price": 800
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском ноги голени",
+    "price": 1100
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском ноги полностью",
+    "price": 1900
+  },
+  {
+    "category": "body",
+    "name": "Эпиляция воском бикини глубокое",
+    "price": 2000
+  },
+  {
+    "category": "face",
+    "name": "Уход по типу кожи",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Экспресс уход",
+    "price": 3000
+  },
+  {
+    "category": "brows",
+    "name": "Пудровое напыление бровей",
+    "price": 11000
+  },
+  {
+    "category": "brows",
+    "name": "Пудровое напыление межресничного пространства",
+    "price": 8000
+  },
+  {
+    "category": "face",
+    "name": "Атравматичная чистка",
+    "price": 3000
+  },
+  {
+    "category": "face",
+    "name": "Комбинированная чистка",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Пилинги поверхностные",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Ультразвуковая чистка",
+    "price": 3000
+  },
+  {
+    "category": "face",
+    "name": "Массаж лица",
+    "price": 2000,
+    "note": "Авторский массаж лица"
+  },
+  {
+    "category": "face",
+    "name": "Чистка лица комбинированная",
+    "price": 4500
+  },
+  {
+    "category": "brows",
+    "name": "Дизайн бровей",
+    "price": 1100
+  },
+  {
+    "category": "body",
+    "name": "Тридинг лица",
+    "price": 500
+  },
+  {
+    "category": "face",
+    "name": "Чистка спины",
+    "price": 4000
+  },
+  {
+    "category": "brows",
+    "name": "Коррекция пудрового напыления межресничного пространства",
+    "price": 3750
+  },
+  {
+    "category": "brows",
+    "name": "Ботокс ресниц",
+    "price": 700
+  },
+  {
+    "category": "brows",
+    "name": "Коррекция пудрового напыления бровей",
+    "price": 4450
+  },
+  {
+    "category": "brows",
+    "name": "Снятие нарощенных ресниц",
+    "price": 500
+  },
+  {
+    "category": "face",
+    "name": "Холодная плазма (пигмент, акне, омоложение)",
+    "price": 8000
+  },
+  {
+    "category": "face",
+    "name": "Холодная плазма (локальные зоны)",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Пилинг реконструктор PLL (глобальная реконструкция возрастных изменений без уколов)",
+    "price": 9200
+  },
+  {
+    "category": "face",
+    "name": "Сэндвич Увлажнение (глубокое увлажнение и лифтинг)",
+    "price": 6000
+  },
+  {
+    "category": "face",
+    "name": "Peach Peel (всесезонный пилинг, спа уход, эффект безинъекционной биоревитализации)",
+    "price": 5000
+  },
+  {
+    "category": "face",
+    "name": "ЛакмусVita (первичная консультация)",
+    "price": 2000
+  },
+  {
+    "category": "face",
+    "name": "Пилинг BioRePeelCl3 (мгновенный лифтинг эффект, без реабилитации)",
+    "price": 5000
+  },
+  {
+    "category": "face",
+    "name": "Уход + чистка лица (УЗИ)",
+    "price": 4500
+  },
+  {
+    "category": "face",
+    "name": "Микронидлинг (фракционная мезотерапия лица)",
+    "price": 3500
+  },
+  {
+    "category": "brows",
+    "name": "Окрашивание бровей + коррекция",
+    "price": 2000,
+    "note": "Окрашивание профессиональными красителями"
+  },
+  {
+    "category": "face",
+    "name": "Ультразвуковая чистка + пилинг BioRePeelCl3 (питание + мгновенный лифтинг)",
+    "price": 7000
+  },
+  {
+    "category": "face",
+    "name": "Ультразвуковая чистка + пилинг Peach Peel (увлажнение + лифтинг)",
+    "price": 7000
+  },
+  {
+    "category": "face",
+    "name": "Ультразвуковая чистка + миндальный пилинг (уход, сияние, питание)",
+    "price": 5000
+  },
+  {
+    "category": "face",
+    "name": "Комбинированная чистка + миндальный пилинг",
+    "price": 6000
+  },
+  {
+    "category": "face",
+    "name": "Уход по типу кожи (косметика Dr. Spiller) + массаж",
+    "price": 4500
+  },
+  {
+    "category": "face",
+    "name": "Уходовые процедуры (феруловый массаж, пилинг отбеливающий, маска с феруловой кислотой)",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Холодная плазма, блефаропластика (область глаз)",
+    "price": 6000
+  },
+  {
+    "category": "face",
+    "name": "Холодная плазма (омоложение)",
+    "price": 8000
+  },
+  {
+    "category": "face",
+    "name": "Холодная плазма (носогубка, подбородок)",
+    "price": 4000
+  },
+  {
+    "category": "face",
+    "name": "Пилинг PRX-T33 (угревая сыпь, последствия акне, гиперкератоз, веснушки)",
+    "price": 5000
+  },
+  {
+    "category": "face",
+    "name": "Пилинг-реконструктор FSL (всесезонный пилинг без реабилитации)",
+    "price": 9200
+  },
+  {
+    "category": "face",
+    "name": "Секрет CLEOPATRI (омоложение и лечение без уколов)",
+    "price": 5000
+  },
+  {
+    "category": "face",
+    "name": "Анти-акне (пилинг для устранения высыпаний)",
+    "price": 6000
+  },
+  {
+    "category": "nails",
+    "name": "Удаление вросшего ногтя",
+    "price": 1000
+  },
+  {
+    "category": "nails",
+    "name": "Маникюр аппаратный",
+    "price": 1400
+  },
+  {
+    "category": "nails",
+    "name": "Полировка японским покрытием",
+    "price": 300
+  },
+  {
+    "category": "nails",
+    "name": "Снятие, маникюр, покрытие гель-лак френч",
+    "price": 3000
+  },
+  {
+    "category": "nails",
+    "name": "Японский маникюр",
+    "price": 2000
+  },
+  {
+    "category": "nails",
+    "name": "Маникюр мужской",
+    "price": 1500
+  },
+  {
+    "category": "nails",
+    "name": "Педикюр мужской",
+    "price": 2600
+  },
+  {
+    "category": "nails",
+    "name": "Снятие, педикюр, покрытие гель-лак",
+    "price": 3300
+  },
+  {
+    "category": "nails",
+    "name": "Маникюр классический",
+    "price": 1400
+  },
+  {
+    "category": "nails",
+    "name": "Педикюр аппаратный",
+    "price": 2300
+  },
+  {
+    "category": "nails",
+    "name": "Наращивание ногтей средняя длина",
+    "price": 4600
+  },
+  {
+    "category": "nails",
+    "name": "Коррекция нарощенных ногтей гелем",
+    "price": 3900
+  },
+  {
+    "category": "nails",
+    "name": "Снятие гель-лака без дальнейшего покрытия",
+    "price": 500
+  },
+  {
+    "category": "nails",
+    "name": "Педикюр медицинский",
+    "price": 2700
+  },
+  {
+    "category": "nails",
+    "name": "Педикюр частичный (пальчики или стопы), SPA",
+    "price": 1800
+  },
+  {
+    "category": "nails",
+    "name": "Укрепление ногтей гелем",
+    "price": 2700
+  },
+  {
+    "category": "nails",
+    "name": "Педикюр аппаратный с покрытием френч",
+    "price": 3600
+  },
+  {
+    "category": "nails",
+    "name": "Укрепление ногтей полигелем",
+    "price": 3100
+  },
+  {
+    "category": "nails",
+    "name": "Снятие, маникюр, покрытие гель-лак средняя длина (Luxio, Sova De Luxe)",
+    "price": 2700,
+    "note": "Профессиональный маникюр с покрытием Luxio"
+  },
+  {
+    "category": "nails",
+    "name": "Покрытие лаком (MASURA, Vinylux)",
+    "price": 500
+  },
+  {
+    "category": "nails",
+    "name": "Покрытие LUXIO гель-лак (Luxio, Sova De Luxe)",
+    "price": 1400,
+    "note": "Покрытие профессиональными материалами"
+  },
+  {
+    "category": "nails",
+    "name": "Парафин рук (термо-варежки)",
+    "price": 800
+  },
+  {
+    "category": "nails",
+    "name": "Горячий парафин (скраб + крем + парафин)",
+    "price": 800
+  },
+  {
+    "category": "nails",
+    "name": "Дизайн",
+    "price": 100
+  },
+  {
+    "category": "nails",
+    "name": "Снятие чужого гель-лака",
+    "price": 500
+  },
+  {
+    "category": "nails",
+    "name": "Снятие гель-лака с нарощенных ногтей",
+    "price": 1000
+  },
+  {
+    "category": "nails",
+    "name": "Снятие, маникюр, покрытие гель-лак LUXIO, длинные ногти",
+    "price": 2700,
+    "note": "Маникюр с покрытием LUXIO"
+  }
+];
+
+const list = document.getElementById('price-list');
+const empty = document.getElementById('price-empty');
+const search = document.getElementById('price-search');
+const tabs = [...document.querySelectorAll('[data-tab]')];
+let activeCategory = 'all';
+let expanded = false;
+const numberFormatter = new Intl.NumberFormat('ru-RU');
+
+// Entire price list is created from local data. No form sends personal data.
+const moreButton = document.createElement('button');
+moreButton.type = 'button';
+moreButton.className = 'price-more';
+moreButton.setAttribute('aria-expanded','false');
+moreButton.innerHTML = 'Показать все услуги <span aria-hidden="true">↓</span>';
+list.after(moreButton);
+moreButton.addEventListener('click',()=>{expanded=!expanded;renderPrices();});
+
+function normalize(s){return s.toLocaleLowerCase('ru-RU').replaceAll('ё','е').trim();}
+function renderPrices(){
+  const query = normalize(search.value);
+  const matched = prices.filter(item=>(activeCategory==='all'||item.category===activeCategory)&&(!query||normalize(item.name+' '+(item.note||'')).includes(query)));
+  const limit = activeCategory==='all'&&!query&&!expanded?12:matched.length;
+  const visible = matched.slice(0,limit);
+  list.replaceChildren();
+  for(const item of visible){
+    const row = document.createElement('div'); row.className='price-row';
+    const name = document.createElement('span'); name.className='price-name';name.textContent=item.name;
+    if(item.note){const detail=document.createElement('small');detail.textContent=item.note;name.append(detail);}
+    const cost = document.createElement('span');cost.className='price-value';
+    if(item.price===null){cost.classList.add('is-ask');cost.textContent='Уточнить';}
+    else if(typeof item.price==='number'){cost.textContent=numberFormatter.format(item.price)+' ₽';}
+    else{cost.textContent=item.price;}
+    row.append(name,cost);list.append(row);
+  }
+  empty.hidden=matched.length!==0;
+  moreButton.hidden=activeCategory!=='all'||!!query||matched.length<=12;
+  if(!moreButton.hidden){moreButton.innerHTML=expanded?'Свернуть список <span aria-hidden="true">↑</span>':'Показать все '+matched.length+' услуг <span aria-hidden="true">↓</span>';moreButton.setAttribute('aria-expanded',String(expanded));}
+}
+function setTab(category){
+  activeCategory=category;expanded=false;
+  for(const button of tabs){const selected=button.dataset.tab===category;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;}
+  renderPrices();
+}
+tabs.forEach((button,index)=>{
+  button.addEventListener('click',()=>setTab(button.dataset.tab));
+  button.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    event.preventDefault();
+    const newIndex=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
+    tabs[newIndex].focus();setTab(tabs[newIndex].dataset.tab);
+  });
+});
+search.addEventListener('input',()=>{expanded=false;renderPrices();});
+document.querySelectorAll('[data-category-target]').forEach(link=>link.addEventListener('click',()=>{search.value='';setTab(link.dataset.categoryTarget);}));
+renderPrices();
+
+const toggle = document.querySelector('.menu-toggle');
+const mobileNav = document.getElementById('mobile-nav');
+function closeMenu(){toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Открыть меню');mobileNav.classList.remove('is-open');mobileNav.inert=true;}
+function openMenu(){toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','Закрыть меню');mobileNav.classList.add('is-open');mobileNav.inert=false;}
+toggle.addEventListener('click',()=>toggle.getAttribute('aria-expanded')==='true'?closeMenu():openMenu());
+mobileNav.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){closeMenu();toggle.focus();}});
+document.addEventListener('click',event=>{if(!event.target.closest('.header')&&toggle.getAttribute('aria-expanded')==='true')closeMenu();});
+window.matchMedia('(min-width: 991px)').addEventListener('change',ev=>{if(ev.matches)closeMenu();});
+
+const questions=[...document.querySelectorAll('.faq-list details')];
+questions.forEach(entry=>entry.addEventListener('toggle',()=>{if(entry.open)questions.forEach(other=>{if(other!==entry)other.open=false;});}));
+document.getElementById('copyright-year').textContent=new Date().getFullYear();
+
+</script>
 </body>
 </html>
