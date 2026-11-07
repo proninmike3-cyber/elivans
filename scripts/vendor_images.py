@@ -30,7 +30,7 @@ NAMES = [
     "salon-interior",
     "master-olesya",
     "master-svetlana-usacheva",
-    "master-elena-poshibaуlova",
+    "master-elena-poshibaylova",
     "master-anastasia-titkova",
     "master-melanya-loretsyan",
     "master-irina-gribina",
